@@ -1,2 +1,2 @@
 ## Helpy-help
-# Helping people to help themselves out of poverty.
+### Helping people to help themselves out of poverty.
