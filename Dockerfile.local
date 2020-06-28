@@ -1,0 +1,5 @@
+# Allows Maven dependencies to be cached so that `docker-compose up` is quick
+FROM maven:3.6.3-openjdk-11
+WORKDIR /app
+COPY . .
+RUN mvn dependency:go-offline

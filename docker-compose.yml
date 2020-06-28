@@ -7,3 +7,25 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "true"
       MYSQL_USER: "user"
+    restart: always
+    networks:
+      - backend
+  service:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      DB_URL: "customerdb"
+      DB_USERNAME: "user"
+    command: "./mvnw spring-boot:run"
+    depends_on:
+      - db
+    networks:
+      - backend
+networks:
+  backend:
