@@ -1,8 +1,7 @@
 FROM maven:3.6.3-openjdk-11 AS MAVEN-BUILD
 WORKDIR /build
-COPY pom.xml .
+COPY . /build/
 RUN mvn dependency:go-offline
-COPY src/ /build/src/
 RUN mvn package
 
 FROM openjdk:11-jre-slim
