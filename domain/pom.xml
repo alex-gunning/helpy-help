@@ -7,10 +7,10 @@
         <artifactId>help-customer-service</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>infrastructure</artifactId>
+    <artifactId>domain</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>infrastructure</name>
-    <description>Driven adapters</description>
+    <name>domain</name>
+    <description>Core domain code</description>
 
     <properties>
         <java.version>11</java.version>
@@ -21,13 +21,4 @@
         <testSourceDirectory>${project.basedir}/src/test</testSourceDirectory>
     </build>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.helpy</groupId>
-            <artifactId>domain</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
-
 </project>
-

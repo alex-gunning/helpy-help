@@ -18,11 +18,11 @@ services:
       - 3000:3000
     volumes:
       - .:/app
-    working_dir: /app
+    working_dir: /app/web
     environment:
       DB_URL: "customerdb"
       DB_USERNAME: "user"
-    command: "./mvnw spring-boot:run"
+    command: "mvn spring-boot:run"
     depends_on:
       - db
     networks:
