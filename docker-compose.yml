@@ -15,7 +15,7 @@ services:
       context: .
       dockerfile: Dockerfile.local
     ports:
-      - 3000:3000
+      - 3000:8080
     volumes:
       - .:/app
     working_dir: /app/web

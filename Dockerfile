@@ -6,6 +6,6 @@ RUN mvn package
 
 FROM openjdk:11-jre-slim
 WORKDIR /app
-COPY --from=MAVEN-BUILD /build/target/help-customer-service-0.0.1-SNAPSHOT.jar /app/
-EXPOSE 3000
-ENTRYPOINT java -jar help-customer-service-0.0.1-SNAPSHOT.jar
+COPY --from=MAVEN-BUILD /build/web/target/web-0.0.1-SNAPSHOT.jar /app/
+EXPOSE 8080
+CMD java -jar web-0.0.1-SNAPSHOT.jar
