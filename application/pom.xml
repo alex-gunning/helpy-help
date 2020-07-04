@@ -24,6 +24,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+<!--                <configuration>-->
+<!--                    <mainClass>org.helpy.application.ApplicationKt</mainClass>-->
+<!--                </configuration>-->
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -51,17 +54,17 @@
         <dependency>
             <groupId>org.helpy</groupId>
             <artifactId>domain</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.helpy</groupId>
             <artifactId>infrastructure</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.helpy</groupId>
             <artifactId>web</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
