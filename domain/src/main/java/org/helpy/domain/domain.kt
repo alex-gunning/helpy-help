@@ -5,4 +5,3 @@ interface CustomerService {
    fun save(customer: Customer): Customer
    fun fetch(customerId: Int): Customer
 }
-
