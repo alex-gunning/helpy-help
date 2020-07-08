@@ -3,8 +3,8 @@ package org.helpy.domain.aggregate.transactions
 import org.helpy.domain.aggregate.accounts.BankAccount
 import org.helpy.domain.aggregate.utils.Money
 import java.time.LocalDateTime
+import java.util.UUID
 
-class Deposit(amount: Money, timestamp: LocalDateTime, from: BankAccount)
-class Withdrawal(amount: Money, timestamp: LocalDateTime, to: BankAccount)
-
-
+inline class ExternalTransactionId(val id: UUID)
+data class Deposit(val amount: Money, val timestamp: LocalDateTime, val from: BankAccount)
+data class Withdrawal(val amount: Money, val timestamp: LocalDateTime, val to: BankAccount)

@@ -5,7 +5,8 @@ import java.util.UUID
 interface Photo {
     fun getData()
 }
-data class Giftee(val gifteeId: UUID,
+inline class GifteeId(val id: UUID)
+data class Giftee(val gifteeId: GifteeId,
                   val firstname: String,
                   val surname: String,
                   val idNumber: String?,
