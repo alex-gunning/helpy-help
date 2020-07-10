@@ -13,4 +13,6 @@ _locally:_
 
 1. Download [IntelliJ Community Edition](https://www.jetbrains.com/idea/download/) 
 2. Open the project, let the dependencies download and then build the entire thing
-3. Open and run **_Application/src/main/Application.kt_**
+3. Run the database (easiest way is with *docker-compose up db*)
+4. Open and run **_Application/src/main/Application.kt_**
+Migrations will run and application will start

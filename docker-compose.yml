@@ -4,6 +4,8 @@ services:
     image: "mysql:5.7"
     ports:
       - 3306:3306
+    volumes:
+      - /data-db:/var/lib/mysql
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "true"
       MYSQL_USER: "user"
@@ -20,8 +22,9 @@ services:
       - .:/app
     working_dir: /app/application
     environment:
-      DB_URL: "customerdb"
-      DB_USERNAME: "user"
+      DB_URL: "db"
+      DB_USERNAME: "root"
+      DB_PORT: "3306"
     command: "mvn spring-boot:run"
     depends_on:
       - db
