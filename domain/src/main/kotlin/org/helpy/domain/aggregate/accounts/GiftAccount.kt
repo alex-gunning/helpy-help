@@ -6,7 +6,8 @@ import org.helpy.domain.aggregate.utils.Money
 import java.time.LocalDateTime
 import java.util.UUID
 
-data class GiftAccount(val accountId: UUID = UUID.randomUUID(),
+inline class GiftAccountId(val id: UUID = UUID.randomUUID())
+data class GiftAccount(val accountId: GiftAccountId,
                        val gifter: Gifter,
                        val giftee: Giftee,
                        val credits: Money,
