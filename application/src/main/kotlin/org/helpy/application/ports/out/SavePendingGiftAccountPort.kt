@@ -5,5 +5,5 @@ import org.helpy.domain.aggregate.users.GifterId
 import org.helpy.domain.aggregate.utils.Money
 
 interface SavePendingGiftAccountPort {
-    fun savePendingGiftAccount(money: Money, gifterId: GifterId, gifteeId: GifteeId): Unit
+    fun savePendingGiftAccount(credits: Money, gifterId: GifterId, gifteeId: GifteeId, redeemed: Boolean): Unit
 }
