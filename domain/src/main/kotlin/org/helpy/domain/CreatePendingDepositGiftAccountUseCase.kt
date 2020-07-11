@@ -1,4 +1,4 @@
-package org.helpy.application.ports.`in`.usecases
+package org.helpy.domain
 
 import org.helpy.domain.aggregate.transactions.TemporaryDepositAccount
 import org.helpy.domain.aggregate.users.GifteeId

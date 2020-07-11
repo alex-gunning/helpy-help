@@ -99,5 +99,5 @@
         <module>web</module>
         <module>infrastructure</module>
         <module>application</module>
-    </modules>
+   </modules>
 </project>

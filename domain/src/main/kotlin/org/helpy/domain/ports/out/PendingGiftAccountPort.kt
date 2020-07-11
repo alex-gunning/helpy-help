@@ -1,9 +1,12 @@
-package org.helpy.application.ports.out
+package org.helpy.domain.ports.out
 
+import org.helpy.domain.aggregate.accounts.GiftAccount
+import org.helpy.domain.aggregate.accounts.GiftAccountId
 import org.helpy.domain.aggregate.users.GifteeId
 import org.helpy.domain.aggregate.users.GifterId
 import org.helpy.domain.aggregate.utils.Money
 
-interface SavePendingGiftAccountPort {
+interface PendingGiftAccountPort {
     fun savePendingGiftAccount(credits: Money, gifterId: GifterId, gifteeId: GifteeId, redeemed: Boolean): Unit
+    fun loadPendingGiftAccount(accountId: GiftAccountId): GiftAccount
 }
