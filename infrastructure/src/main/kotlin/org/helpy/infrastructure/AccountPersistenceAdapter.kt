@@ -14,7 +14,7 @@ class AccountPersistenceAdapter: LoadUserAccountPort {
     }
 
     override fun loadGifteeAccount(gifteeId: GifteeId): Giftee {
-        TODO("Load Giftee account via JPS")
+        TODO("Load Giftee account via JPA")
     }
 
 }

@@ -1,7 +1,7 @@
 package org.helpy.web
 
-import org.helpy.domain.CreatePendingDepositGiftUseCase
-import org.helpy.domain.SendPendingDepositGiftAccountCommand
+import org.helpy.domain.ports.`in`.usecases.CreatePendingDepositGiftUseCase
+import org.helpy.domain.ports.`in`.usecases.SendPendingDepositGiftAccountCommand
 import org.helpy.domain.aggregate.users.GifteeId
 import org.helpy.domain.aggregate.users.GifterId
 import org.helpy.domain.aggregate.utils.Money
