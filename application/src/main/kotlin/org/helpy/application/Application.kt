@@ -2,7 +2,6 @@ package org.helpy.application
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.context.ApplicationContextAware
 
 @SpringBootApplication(scanBasePackages = [
     "org.helpy.application",

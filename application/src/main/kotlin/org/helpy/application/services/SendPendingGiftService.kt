@@ -1,7 +1,7 @@
 package org.helpy.application.services
 
-import org.helpy.domain.CreatePendingDepositGiftUseCase
-import org.helpy.domain.SendPendingDepositGiftAccountCommand
+import org.helpy.domain.ports.`in`.usecases.CreatePendingDepositGiftUseCase
+import org.helpy.domain.ports.`in`.usecases.SendPendingDepositGiftAccountCommand
 import org.helpy.domain.aggregate.accounts.GiftAccount
 import org.helpy.domain.aggregate.transactions.ExternalTransactionIdentifier
 import org.helpy.domain.aggregate.transactions.TemporaryDepositAccount
