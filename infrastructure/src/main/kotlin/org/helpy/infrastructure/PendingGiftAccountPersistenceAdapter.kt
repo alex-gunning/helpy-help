@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class PendingGiftAccountPersistenceAdapter: PendingGiftAccountPort {
-    override fun savePendingGiftAccount(credits: Money, gifterId: GifterId, gifteeId: GifteeId, redeemed: Boolean) {
+    override fun savePendingGiftAccount(giftAccount: GiftAccount) {
         TODO("Not yet implemented")
     }
 

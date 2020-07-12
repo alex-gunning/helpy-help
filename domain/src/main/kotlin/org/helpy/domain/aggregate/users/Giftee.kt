@@ -10,5 +10,5 @@ data class Giftee(val gifteeId: GifteeId,
                   val firstname: String,
                   val surname: String,
                   val idNumber: String?,
-                  val photo: Photo)
+                  val photo: Photo?)
 

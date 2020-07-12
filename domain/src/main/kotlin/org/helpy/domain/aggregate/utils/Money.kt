@@ -7,11 +7,11 @@ data class Money(val amount: BigDecimal,
                  val currencyCode: String = DEFAULT_CURRENCY_CODE,
                  val currencySymbol: String = DEFAULT_CURRENCY_SYMBOL) {
     companion object {
-        @Value("money.currency.code.default")
-        lateinit var DEFAULT_CURRENCY_CODE: String
+        @Value("\${money.currency.code.default}")
+        var DEFAULT_CURRENCY_CODE: String = ""
 
-        @Value("money.currency.symbol.default")
-        lateinit var DEFAULT_CURRENCY_SYMBOL: String
+        @Value("\${money.currency.symbol.default}")
+        var DEFAULT_CURRENCY_SYMBOL: String = ""
     }
     operator fun plus(other: Money): Money {
         return this.copy(amount = this.amount.plus(other.amount))

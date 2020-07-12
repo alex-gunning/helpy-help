@@ -6,6 +6,6 @@ import org.helpy.domain.aggregate.users.Gifter
 import org.helpy.domain.aggregate.users.GifterId
 
 interface LoadUserAccountPort {
-    fun loadGifterAccount(gifterId: GifterId): Gifter
-    fun loadGifteeAccount(gifteeId: GifteeId): Giftee
+    fun loadUserAccount(gifterId: GifterId): Gifter
+    fun loadUserAccount(gifteeId: GifteeId): Giftee
 }

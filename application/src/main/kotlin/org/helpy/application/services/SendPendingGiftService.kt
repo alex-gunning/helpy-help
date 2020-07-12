@@ -12,9 +12,10 @@ import java.util.UUID
 @Component
 class SendPendingGiftService(private val userAccountPort: LoadUserAccountPort): CreatePendingDepositGiftUseCase {
     override fun createPendingMoneyGiftAccount(command: SendPendingDepositGiftAccountCommand): TemporaryDepositAccount? {
-        val giftee = userAccountPort.loadGifteeAccount(command.gifteeId)
-        val gifter = userAccountPort.loadGifterAccount(command.gifterId)
+        val giftee = userAccountPort.loadUserAccount(command.gifteeId)
+        val gifter = userAccountPort.loadUserAccount(command.gifterId)
         val giftAccount = GiftAccount(gifter = gifter, giftee = giftee, credits = command.amount)
+        println(giftAccount)
 
 //        TODO("Need a port for creating an external transaction")
         return TemporaryDepositAccount(ExternalTransactionIdentifier(UUID.randomUUID()))
