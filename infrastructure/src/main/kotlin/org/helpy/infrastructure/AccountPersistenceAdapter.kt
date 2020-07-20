@@ -33,8 +33,7 @@ class AccountPersistenceAdapter: LoadUserAccountPort {
                 gifteeId = GifteeId(UUID.randomUUID()),
                 firstname = "Alex",
                 surname = "Gunning",
-                idNumber = null,
-                photo = null
+                idNumber = null
        )
     }
 

@@ -11,6 +11,71 @@
     <build>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
         <testSourceDirectory>${project.basedir}/src/test</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>src/main/resources/db.properties</file>
+                            </files>
+                            <quiet>false</quiet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>3.13.2</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>8.0.21</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <jdbc>
+                        <driver>${db.driver}</driver>
+                        <url>${db.url}</url>
+                        <username>${db.username}</username>
+                        <password>${db.password}</password>
+                    </jdbc>
+                    <!--                    <jdbc>-->
+                    <!--                        <driver>com.mysql.cj.jdbc.Driver</driver>-->
+                    <!--                        <url>jdbc:mysql://localhost</url>-->
+                    <!--                        <user>root</user>-->
+                    <!--                        <password></password>-->
+                    <!--                    </jdbc>-->
+                    <generator>
+                        <database>
+                            <name>org.jooq.meta.mysql.MySQLDatabase</name>
+                            <inputSchema>customers</inputSchema>
+                        </database>
+                        <target>
+                            <packageName>org.helpy.infrastructure.dao</packageName>
+                            <directory>src/main/kotlin</directory>
+                        </target>
+                    </generator>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
     <dependencies>
         <dependency>
@@ -19,6 +84,5 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-
 </project>
 

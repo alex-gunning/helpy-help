@@ -1,16 +1,17 @@
-package org.helpy.infrastructure
+package org.helpy.infrastructure.gift
 
 import org.helpy.domain.aggregate.accounts.GiftAccount
 import org.helpy.domain.aggregate.accounts.GiftAccountId
-import org.helpy.domain.aggregate.users.GifteeId
-import org.helpy.domain.aggregate.users.GifterId
-import org.helpy.domain.aggregate.utils.Money
 import org.helpy.domain.ports.out.PendingGiftAccountPort
 import org.springframework.stereotype.Repository
 
 @Repository
-class PendingGiftAccountPersistenceAdapter: PendingGiftAccountPort {
+class GiftAccountPersistenceAdapter(
+//        val giftAccountRepository: GiftAccountRepository,
+//        val giftAccountMapper: GiftAccountMapper
+) : PendingGiftAccountPort {
     override fun savePendingGiftAccount(giftAccount: GiftAccount) {
+//        giftAccountRepository.save(giftAccountMapper.toPersistenceModel(giftAccount))
         TODO("Not yet implemented")
     }
 

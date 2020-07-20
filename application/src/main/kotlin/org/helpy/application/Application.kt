@@ -1,6 +1,7 @@
 package org.helpy.application
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.runApplication
 
 @SpringBootApplication(scanBasePackages = [
@@ -9,6 +10,7 @@ import org.springframework.boot.runApplication
     "org.helpy.infrastructure",
     "org.helpy.web"
 ])
+@EntityScan("org.helpy.infrastructure")
 class Application
 
 fun main(args: Array<String>) {
