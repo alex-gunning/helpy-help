@@ -5,6 +5,7 @@ import org.helpy.domain.ports.`in`.usecases.SendPendingDepositGiftAccountCommand
 import org.helpy.domain.aggregate.users.GifteeId
 import org.helpy.domain.aggregate.users.GifterId
 import org.helpy.domain.aggregate.utils.Money
+import org.helpy.domain.ports.out.LoadUserAccountPort
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import java.math.BigDecimal
@@ -12,11 +13,13 @@ import java.util.UUID
 
 @RestController
 class CustomController(
-       val sendPendingGiftService: CreatePendingDepositGiftUseCase
+       val sendPendingGiftService: CreatePendingDepositGiftUseCase,
+       val loadUserAccountPort: LoadUserAccountPort
 ) {
 
     @GetMapping("/")
     fun bleh(): String {
+        loadUserAccountPort.loadUserAccount(GifterId(UUID.randomUUID()))
         return "blehBleh"
     }
 
