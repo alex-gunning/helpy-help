@@ -3,7 +3,6 @@ iac/terraform.tfstate.backup
 iac/.terraform/**
 
 HELP.md
-db/
 target/
 
 ### STS ###
