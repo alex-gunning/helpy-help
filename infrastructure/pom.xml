@@ -32,6 +32,24 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>6.5.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>migrate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <configFiles>
+                        <configFile>src/main/resources/db.properties</configFile>
+                    </configFiles>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
                 <version>3.13.2</version>
@@ -60,7 +78,7 @@
                     <generator>
                         <database>
                             <name>org.jooq.meta.mysql.MySQLDatabase</name>
-                            <inputSchema>customers</inputSchema>
+                            <inputSchema>app_customers</inputSchema>
                             <excludes>flyway_schema_history</excludes>
                         </database>
                         <target>
@@ -73,6 +91,11 @@
         </plugins>
     </build>
     <dependencies>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>6.5.0</version>
+        </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
