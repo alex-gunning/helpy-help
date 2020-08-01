@@ -7,20 +7,16 @@ import org.helpy.domain.aggregate.users.GifteeId
 import org.helpy.domain.aggregate.users.Gifter
 import org.helpy.domain.aggregate.users.GifterId
 import org.helpy.domain.ports.out.LoadUserAccountPort
-import org.helpy.infrastructure.dao.Tables.PENDING_GIFTS
-import org.helpy.infrastructure.dao.tables.PendingGifts
+import org.helpy.domain.ports.out.SaveUserAccountPort
+import org.helpy.infrastructure.dao.Tables.GIFTEE
+import org.helpy.infrastructure.dao.Tables.GIFTER
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-class AccountPersistenceAdapter(val dsl: DSLContext): LoadUserAccountPort {
+class AccountPersistenceAdapter(val dsl: DSLContext): LoadUserAccountPort, SaveUserAccountPort {
     override fun loadUserAccount(gifterId: GifterId): Gifter {
-//        dsl.insertInto(PENDING_GIFTS)
-//                .set(PENDING_GIFTS.GIFTEE_ID, 3)
-//                .set(PENDING_GIFTS.GIFTER_ID, 3)
-//                .set(PENDING_GIFTS.PENDING_GIFT_UUID, "AllYourGUIDAreBelongToUs")
-//                .execute()
         return Gifter(
                 gifterId = GifterId(UUID.randomUUID()),
                 firstname = "Alex",
@@ -35,7 +31,6 @@ class AccountPersistenceAdapter(val dsl: DSLContext): LoadUserAccountPort {
     }
 
     override fun loadUserAccount(gifteeId: GifteeId): Giftee {
-//        TODO("Load Giftee account via JPA")
         return Giftee(
                 gifteeId = GifteeId(UUID.randomUUID()),
                 firstname = "Alex",
@@ -44,4 +39,22 @@ class AccountPersistenceAdapter(val dsl: DSLContext): LoadUserAccountPort {
        )
     }
 
+    override fun saveUserAccount(gifter: Gifter): Boolean {
+        dsl.insertInto(GIFTER)
+                .set(GIFTER.FIRSTNAME, "")
+                .set(GIFTER.SURNAME, "")
+                .set(GIFTER.GIFTER_UUID, UUID.randomUUID().toString())
+                .execute()
+        return true
+    }
+
+    override fun saveUserAccount(giftee: Giftee): Boolean {
+        dsl.insertInto(GIFTEE)
+                .set(GIFTEE.FIRSTNAME, "")
+                .set(GIFTEE.SURNAME, "")
+                .set(GIFTEE.ID_NUMBER, "")
+                .set(GIFTEE.GIFTEE_UUID, UUID.randomUUID().toString())
+                .execute()
+        return true
+    }
 }
