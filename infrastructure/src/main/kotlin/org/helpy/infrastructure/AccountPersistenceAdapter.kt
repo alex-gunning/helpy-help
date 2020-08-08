@@ -1,5 +1,7 @@
 package org.helpy.infrastructure
 
+import arrow.core.Either
+import arrow.core.right
 import org.helpy.domain.aggregate.accounts.Bank
 import org.helpy.domain.aggregate.accounts.BankAccount
 import org.helpy.domain.aggregate.users.Giftee
@@ -15,28 +17,32 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-class AccountPersistenceAdapter(val dsl: DSLContext): LoadUserAccountPort, SaveUserAccountPort {
+class AccountPersistenceAdapter(val dsl: DSLContext) : LoadUserAccountPort, SaveUserAccountPort {
     override fun loadUserAccount(gifterId: GifterId): Gifter {
-        return Gifter(
-                gifterId = GifterId(UUID.randomUUID()),
-                firstname = "Alex",
-                surname = "Gunning",
+        val result = dsl.select(GIFTER.FIRSTNAME, GIFTER.SURNAME)
+                .from(GIFTER)
+                .where(GIFTER.GIFTER_UUID.equal(gifterId.id.toString()))
+                .fetch()
+        result.isNotEmpty
+        return Gifter(firstname = result.getValue(0, GIFTER.FIRSTNAME),
+                surname = result.getValue(0, GIFTER.SURNAME),
+                gifterId = gifterId,
                 bankAccount = BankAccount(
                         accountId = UUID.randomUUID(),
                         provider = Bank.CAPITEC,
                         branch = "Wynberg",
                         accountNumber = "123456"
-                )
-        )
+                ))
     }
 
     override fun loadUserAccount(gifteeId: GifteeId): Giftee {
-        return Giftee(
-                gifteeId = GifteeId(UUID.randomUUID()),
-                firstname = "Alex",
-                surname = "Gunning",
-                idNumber = null
-       )
+        return throw RuntimeException("Cannot retrieve")
+//        return Giftee(
+//                gifteeId = GifteeId(UUID.randomUUID()),
+//                firstname = "Alex",
+//                surname = "Gunning",
+//                idNumber = null
+//       )
     }
 
     override fun saveUserAccount(gifter: Gifter): Boolean {

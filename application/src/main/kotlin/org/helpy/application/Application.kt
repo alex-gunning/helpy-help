@@ -1,7 +1,5 @@
 package org.helpy.application
 
-import arrow.core.Id
-import arrow.core.Option
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.runApplication

@@ -1,6 +1,10 @@
 package org.helpy.web
 
 import arrow.core.Either
+import arrow.core.extensions.either.foldable.foldLeft
+import arrow.core.extensions.fx
+import arrow.core.getOrElse
+import arrow.core.getOrHandle
 import arrow.core.left
 import arrow.core.right
 import org.helpy.domain.ports.`in`.usecases.CreatePendingDepositGiftUseCase
@@ -40,10 +44,27 @@ class CustomController(
     @GetMapping("/gifter/{gifterid}")
     fun fetchGifter(@PathVariable(name = "gifterid") id: String): Gifter {
         val eitherGifter = parseUUID(id).map { GifterId(it) }
-        return when(eitherGifter) {
-            is Either.Left -> throw Error("BAD!")
-            is Either.Right -> loadUserAccount.loadUserAccount(eitherGifter.b)
+        return Either.fx<Throwable, Gifter> {
+            val (id) = eitherGifter
+            loadUserAccount.loadUserAccount(id)
+        }.getOrHandle {
+            when(it) {
+                // Domain errors
+                is IllegalArgumentException -> throw Error("Bad! Will be caught by ControllerAdvice")
+                is RuntimeException -> throw Error("Good! Cannot save!") // <-- Wrap in either
+                else -> throw Error("Wtf!")
+            }
         }
+
+//        Either.fx<Throwable, GifterId> {
+//           val (id) = eitherGifter
+//           val (gifterId) = loadUserAccount.loadUserAccount(id)
+//           gifterId
+//        }
+//        return when(eitherGifter) {
+//            is Either.Left -> throw Error("BAD!")
+//            is Either.Right -> loadUserAccount.loadUserAccount(eitherGifter.b)
+//        }
     }
 
     @PostMapping
