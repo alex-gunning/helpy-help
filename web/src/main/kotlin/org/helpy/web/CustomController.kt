@@ -19,6 +19,7 @@ import org.helpy.domain.ports.out.LoadUserAccountPort
 import org.helpy.domain.ports.out.SaveUserAccountPort
 import org.helpy.web.dtos.GifterDto
 import org.helpy.web.utils.Utils.parseUUID
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -39,14 +40,17 @@ class CustomController(
 ) {
 
     @GetMapping("/gifter/{gifterid}")
-    fun fetchGifter(@PathVariable(name = "gifterid") id: String): ResponseEntity<Gifter> {
-        val eitherGifter: Either<Throwable, Gifter> = parseUUID(id)
+    fun fetchGifter(@PathVariable(name = "gifterid") id: String): ResponseEntity<Any> {
+        val eitherGifter = parseUUID(id)
                 .map { GifterId(it) }
                 .map { loadUserAccount.loadUserAccount(it) }
                 .flatten()
 
         return when (eitherGifter) {
-            is Either.Left -> ResponseEntity.badRequest().build()
+            is Either.Left -> return when (eitherGifter.a) {
+                is IllegalArgumentException -> ResponseEntity.badRequest().body("BODYERROR")
+                else -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+            }
             is Either.Right -> ResponseEntity.ok(eitherGifter.b)
         }
     }
