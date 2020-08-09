@@ -8,6 +8,7 @@ import org.helpy.domain.aggregate.users.Giftee
 import org.helpy.domain.aggregate.users.GifteeId
 import org.helpy.domain.aggregate.users.Gifter
 import org.helpy.domain.aggregate.users.GifterId
+import org.helpy.domain.exceptions.LoadUserException
 import org.helpy.domain.ports.out.LoadUserAccountPort
 import org.helpy.domain.ports.out.SaveUserAccountPort
 import org.helpy.infrastructure.dao.Tables.GIFTEE
@@ -18,24 +19,27 @@ import java.util.UUID
 
 @Repository
 class AccountPersistenceAdapter(val dsl: DSLContext) : LoadUserAccountPort, SaveUserAccountPort {
-    override fun loadUserAccount(gifterId: GifterId): Gifter {
+    override fun loadUserAccount(gifterId: GifterId): Either<Throwable, Gifter> {
         val result = dsl.select(GIFTER.FIRSTNAME, GIFTER.SURNAME)
                 .from(GIFTER)
                 .where(GIFTER.GIFTER_UUID.equal(gifterId.id.toString()))
                 .fetch()
-        result.isNotEmpty
-        return Gifter(firstname = result.getValue(0, GIFTER.FIRSTNAME),
-                surname = result.getValue(0, GIFTER.SURNAME),
-                gifterId = gifterId,
-                bankAccount = BankAccount(
-                        accountId = UUID.randomUUID(),
-                        provider = Bank.CAPITEC,
-                        branch = "Wynberg",
-                        accountNumber = "123456"
-                ))
+        return if(result.isNotEmpty) {
+            Either.right(Gifter(firstname = result.getValue(0, GIFTER.FIRSTNAME),
+                    surname = result.getValue(0, GIFTER.SURNAME),
+                    gifterId = gifterId,
+                    bankAccount = BankAccount(
+                            accountId = UUID.randomUUID(),
+                            provider = Bank.CAPITEC,
+                            branch = "Wynberg",
+                            accountNumber = "123456"
+                    )))
+        } else {
+            Either.left(LoadUserException("Could not find user"))
+        }
     }
 
-    override fun loadUserAccount(gifteeId: GifteeId): Giftee {
+    override fun loadUserAccount(gifteeId: GifteeId): Either<Throwable, Giftee> {
         return throw RuntimeException("Cannot retrieve")
 //        return Giftee(
 //                gifteeId = GifteeId(UUID.randomUUID()),

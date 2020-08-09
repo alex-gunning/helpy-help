@@ -16,15 +16,16 @@ class SendPendingGiftService(
         private val pendingGiftAccountPort: PendingGiftAccountPort
 ) : CreatePendingDepositGiftUseCase {
     override fun createPendingMoneyGiftAccount(command: SendPendingDepositGiftAccountCommand): TemporaryDepositAccount? {
-        val giftee = userAccountPort.loadUserAccount(command.gifteeId)
-        val gifter = userAccountPort.loadUserAccount(command.gifterId)
-        val giftAccount = GiftAccount(gifter = gifter, giftee = giftee, credits = command.amount)
-        pendingGiftAccountPort.savePendingGiftAccount(giftAccount)
-
-        println(giftAccount)
+//        val giftee = userAccountPort.loadUserAccount(command.gifteeId)
+//        val gifter = userAccountPort.loadUserAccount(command.gifterId)
+//        val giftAccount = GiftAccount(gifter = gifter, giftee = giftee, credits = command.amount)
+//        pendingGiftAccountPort.savePendingGiftAccount(giftAccount)
+//
+//        println(giftAccount)
 
 //        TODO("Need a port for creating an external transaction")
-        return TemporaryDepositAccount(ExternalTransactionIdentifier(UUID.randomUUID()))
+        //return TemporaryDepositAccount(ExternalTransactionIdentifier(UUID.randomUUID()))
+        return null
     }
 
 }
