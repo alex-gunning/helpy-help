@@ -1,7 +1,6 @@
 package org.helpy.infrastructure
 
 import arrow.core.Either
-import org.helpy.domain.aggregate.accounts.Bank
 import org.helpy.domain.aggregate.accounts.BankAccount
 import org.helpy.domain.aggregate.users.Giftee
 import org.helpy.domain.aggregate.users.GifteeId
@@ -10,6 +9,7 @@ import org.helpy.domain.aggregate.users.GifterId
 import org.helpy.domain.errors.LoadUserAccountError
 import org.helpy.domain.ports.out.LoadUserAccountPort
 import org.helpy.domain.ports.out.SaveUserAccountPort
+import org.helpy.infrastructure.dao.Tables.BANK_ACCOUNT
 import org.helpy.infrastructure.dao.Tables.GIFTEE
 import org.helpy.infrastructure.dao.Tables.GIFTER
 import org.jooq.DSLContext
@@ -19,20 +19,25 @@ import java.util.UUID
 @Repository
 class AccountPersistenceAdapter(val dsl: DSLContext) : LoadUserAccountPort, SaveUserAccountPort {
     override fun loadUserAccount(gifterId: GifterId): Either<LoadUserAccountError, Gifter> {
-        val resultset = dsl.select(GIFTER.FIRSTNAME, GIFTER.SURNAME)
+        val result =
+                dsl.select(
+                    GIFTER.FIRSTNAME, GIFTER.SURNAME,
+                    BANK_ACCOUNT.ACCOUNT_NUMBER, BANK_ACCOUNT.BRANCH_CODE, BANK_ACCOUNT.PROVIDER)
                 .from(GIFTER)
+                .leftJoin(BANK_ACCOUNT)
+                .on(GIFTER.BANK_ACCOUNT_ID.equal(BANK_ACCOUNT.ACCOUNT_ID))
                 .where(GIFTER.GIFTER_UUID.equal(gifterId.id.toString()))
                 .fetch()
-        return Either.cond(resultset.isNotEmpty,
+        return Either.cond(result.isNotEmpty,
                 {
-                    Gifter(firstname = resultset.getValue(0, GIFTER.FIRSTNAME),
-                           surname = resultset.getValue(0, GIFTER.SURNAME),
+                    Gifter(firstname = result.getValue(0, GIFTER.FIRSTNAME),
+                           surname = result.getValue(0, GIFTER.SURNAME),
                            gifterId = gifterId,
                            bankAccount = BankAccount(
                                    accountId = UUID.randomUUID(),
-                                   provider = Bank.CAPITEC,
-                                   branch = "Wynberg",
-                                   accountNumber = "123456"
+                                   provider = result.getValue(0, BANK_ACCOUNT.PROVIDER).name,
+                                   branchCode = result.getValue(0, BANK_ACCOUNT.BRANCH_CODE),
+                                   accountNumber = result.getValue(0, BANK_ACCOUNT.ACCOUNT_NUMBER)
                            ))
                 },
                 { LoadUserAccountError.userAccountNotFound }
