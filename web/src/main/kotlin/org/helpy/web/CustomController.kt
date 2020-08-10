@@ -39,7 +39,7 @@ class CustomController(
             .flatMap { loadUserAccount.loadUserAccount(it) }
             .fold({
                 when (it) {
-                    is UserIdError.createIdError -> ResponseEntity.badRequest().body("Badly formed UUID for userID")
+                    is UserIdError.createIdError -> ResponseEntity.badRequest().body("Badly formed UUID for gifterID")
                     is LoadUserAccountError.userAccountNotFound -> ResponseEntity.notFound().build()
                     else -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
                 }
