@@ -1,20 +1,14 @@
 package org.helpy.web
 
-import arrow.core.Either
-import arrow.core.extensions.either.foldable.foldLeft
-import arrow.core.extensions.either.monad.flatten
-import arrow.core.extensions.fx
 import arrow.core.flatMap
-import arrow.core.getOrElse
-import arrow.core.getOrHandle
-import arrow.core.left
-import arrow.core.right
 import org.helpy.domain.ports.`in`.usecases.CreatePendingDepositGiftUseCase
 import org.helpy.domain.ports.`in`.usecases.SendPendingDepositGiftAccountCommand
 import org.helpy.domain.aggregate.users.GifteeId
 import org.helpy.domain.aggregate.users.Gifter
 import org.helpy.domain.aggregate.users.GifterId
 import org.helpy.domain.aggregate.utils.Money
+import org.helpy.domain.errors.LoadUserAccountError
+import org.helpy.domain.errors.UserIdError
 import org.helpy.domain.ports.out.LoadUserAccountPort
 import org.helpy.domain.ports.out.SaveUserAccountPort
 import org.helpy.web.dtos.GifterDto
@@ -29,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.math.BigDecimal
 import java.util.UUID
-import kotlin.IllegalArgumentException
 
 @RestController
 @RequestMapping("customer")
@@ -40,20 +33,18 @@ class CustomController(
 ) {
 
     @GetMapping("/gifter/{gifterid}")
-    fun fetchGifter(@PathVariable(name = "gifterid") id: String): ResponseEntity<Any> {
-        val eitherGifter = parseUUID(id)
-                .map { GifterId(it) }
-                .map { loadUserAccount.loadUserAccount(it) }
-                .flatten()
-
-        return when (eitherGifter) {
-            is Either.Left -> return when (eitherGifter.a) {
-                is IllegalArgumentException -> ResponseEntity.badRequest().body("BODYERROR")
-                else -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
-            }
-            is Either.Right -> ResponseEntity.ok(eitherGifter.b)
-        }
-    }
+    fun fetchGifter(@PathVariable(name = "gifterid") id: String): ResponseEntity<Any> =
+        parseUUID(id)
+            .map { GifterId(it) }
+            .flatMap { loadUserAccount.loadUserAccount(it) }
+            .fold({
+                when (it) {
+                    is UserIdError.createIdError -> ResponseEntity.badRequest().body("Badly formed UUID for userID")
+                    is LoadUserAccountError.userAccountNotFound -> ResponseEntity.notFound().build()
+                    else -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+                }
+            },
+            { ResponseEntity.ok(it) })
 
     @PostMapping
     fun createGifter(@RequestBody(required = true) Gifter: GifterDto): Gifter {
