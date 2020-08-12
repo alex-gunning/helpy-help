@@ -7,10 +7,12 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 inline class GiftAccountId(val id: UUID = UUID.randomUUID())
-data class GiftAccount(val accountId: GiftAccountId = GiftAccountId(),
-                       val gifter: Gifter,
-                       val giftee: Giftee,
-                       val credits: Money,
-                       val createdAt: LocalDateTime = LocalDateTime.now(),
-                       val pendingDeposit: Boolean = true,
-                       val redeemed: Boolean = false)
+data class GiftAccount(
+    val accountId: GiftAccountId = GiftAccountId(),
+    val gifter: Gifter,
+    val giftee: Giftee,
+    val credits: Money,
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val pendingDeposit: Boolean = true,
+    val redeemed: Boolean = false
+)
