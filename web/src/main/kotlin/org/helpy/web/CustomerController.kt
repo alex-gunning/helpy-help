@@ -14,6 +14,8 @@ import org.helpy.domain.errors.UserIdError
 import org.helpy.domain.ports.out.LoadUserAccountPort
 import org.helpy.domain.ports.out.SaveUserAccountPort
 import org.helpy.web.dtos.GifterDto
+import org.helpy.web.mappers.BankAccountMapper
+import org.helpy.web.mappers.GifterMapper
 import org.helpy.web.utils.Utils.parseUUID
 import org.helpy.web.validations.GifterDtoRequestValidation
 import org.springframework.http.HttpStatus
@@ -58,6 +60,8 @@ class CustomerController(
         GifterDtoRequestValidation
             .validate(gifterDto)
             .toEither()
+            .map { GifterMapper.fromDTO(it) }
+            .map { saveUserAccount.saveUserAccount(it) }
             .fold(
                 { ResponseEntity.status(HttpStatus.BAD_REQUEST).body(it) },
                 {

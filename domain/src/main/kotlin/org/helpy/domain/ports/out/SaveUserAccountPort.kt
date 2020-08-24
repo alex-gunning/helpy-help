@@ -4,6 +4,6 @@ import org.helpy.domain.aggregate.users.Giftee
 import org.helpy.domain.aggregate.users.Gifter
 
 interface SaveUserAccountPort {
-   fun saveUserAccount(gifter: Gifter): Boolean
-   fun saveUserAccount(giftee: Giftee): Boolean
+   fun saveUserAccount(gifter: Gifter): Gifter
+   fun saveUserAccount(giftee: Giftee): Giftee
 }

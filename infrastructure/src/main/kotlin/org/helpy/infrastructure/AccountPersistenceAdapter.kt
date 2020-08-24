@@ -57,23 +57,20 @@ class AccountPersistenceAdapter(val dsl: DSLContext) : LoadUserAccountPort, Save
 //       )
     }
 
-    override fun saveUserAccount(gifter: Gifter): Boolean {
-        TODO("SAVE")
-//        dsl.insertInto(GIFTER)
-//                .set(GIFTER.FIRSTNAME, )
-//                .set(GIFTER.SURNAME, "")
-//                .set(GIFTER.GIFTER_UUID, UUID.randomUUID().toString())
-//                .execute()
-//        return true
+    override fun saveUserAccount(gifter: Gifter): Gifter {
+        dsl.insertInto(GIFTER)
+                .set(GIFTER.FIRSTNAME, gifter.firstname)
+                .set(GIFTER.SURNAME, gifter.surname)
+                .execute()
+        return gifter
     }
 
-    override fun saveUserAccount(giftee: Giftee): Boolean {
+    override fun saveUserAccount(giftee: Giftee): Giftee {
         dsl.insertInto(GIFTEE)
             .set(GIFTEE.FIRSTNAME, "")
             .set(GIFTEE.SURNAME, "")
             .set(GIFTEE.ID_NUMBER, "")
-            .set(GIFTEE.GIFTEE_UUID, UUID.randomUUID().toString())
             .execute()
-        return true
+        return giftee
     }
 }
